@@ -30,13 +30,21 @@ export const notePlugin = () => {
             object: 'block',
             type: 'paragraph',
             key: KeyUtils.create(),
+            nodes: [{ text: '', object: 'text' }],
+        });
+
+        const noteBlock = Block.create({
+            object: 'block',
+            type: 'note',
+            key: KeyUtils.create(),
+            nodes: [emptyParagraph],
         });
         editor.insertBlock(emptyParagraph).moveToEndOfPreviousBlock().wrapBlock('note');
     };
 
     const isNote = (editor: CoreEditor) => {
         let noteTypes = ['note-error', 'note-warning', 'note-link', 'note-quote'];
-        return noteTypes.some(type => (editor.value.document.getParent(editor.value.blocks.first().key) as any).type == type);
+        return noteTypes.some(type => editor.value.document.getClosest(editor.value.anchorBlock.key, (node: any) => node.type === type));
     };
 
     const isEmpty = (editor: CoreEditor) => {
@@ -44,13 +52,14 @@ export const notePlugin = () => {
     };
 
     const onKeyDown = (event: KeyboardEvent, editor: CoreEditor, next: () => any) => {
-        if (event.key === 'Backspace' && (editor as any).hasBlock(noteBlocks) && isEmpty(editor)) {
-            return editor.unwrapBlock('note');
+        if (event.key === 'Backspace' && isNote(editor) && isEmpty(editor)) {
+            const note: any = editor.value.document.getParent(editor.value.anchorBlock.key);
+            return editor.unwrapBlock(note.type).setBlocks('paragraph');
         }
 
 
-        if (event.keyCode == 13 && (editor as any).hasBlock(noteBlocks)) {
-            return (editor as any).insertEmptyBlock(editor);
+        if (event.keyCode == 13 && isNote(editor) && editor.value.anchorBlock.text === '') {
+            return editor.moveAnchorToEndOfNextBlock().insertBlock('paragraph');
         }
 
         next();

@@ -8,6 +8,7 @@ import { ToolbarButton } from './ToolbarButton';
 import { Editor } from 'slate-react';
 import {DropdownBodyProps } from '@epam/uui-components';
 import { uuiSkin } from "@epam/uui";
+import { Block, KeyUtils } from "slate";
 
 const { FlexRow } = uuiSkin;
 
@@ -24,11 +25,10 @@ export class NoteBar extends React.Component<NoteBarProps> {
 
     toggleBlock(blockType: string) {
         this.props.scheduleUpdate();
-
-        if ((this.props.editor as any).hasBlock([blockType])) {
-            this.props.editor.setBlocks('paragraph');
+        if (this.props.editor.value.document.getClosest(this.props.editor.value.anchorBlock.key, (node: any) => node.type === blockType)) {
+            this.props.editor.unwrapBlock(blockType).setBlocks('paragraph');
         } else {
-            this.props.editor.setBlocks(blockType);
+            this.props.editor.wrapBlock(blockType);
         }
 
     }

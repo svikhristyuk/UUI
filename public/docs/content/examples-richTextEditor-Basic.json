@@ -101,8 +101,20 @@
           },
           {
             "object": "text",
-            "text": ". You can import skinContext object from your skin package.",
+            "text": ". You can import skinContext object from your skin package",
             "marks": []
+          },
+          {
+            "object": "block",
+            "type": "paragraph",
+            "data": {},
+            "nodes": [
+              {
+                "object": "text",
+                "text": "",
+                "marks": []
+              }
+            ]
           }
         ]
       },
