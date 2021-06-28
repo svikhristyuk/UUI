@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { ButtonBaseCoreProps, UuiContexts, isClickableChildClicked, uuiMod, uuiElement, uuiMarkers, UuiContext } from '@epam/uui';
 
 export interface ButtonBaseProps extends ButtonBaseCoreProps {
+    forwardRef?: any;
 }
 
 export class ButtonBase<ButtonProps extends ButtonBaseProps> extends React.Component<ButtonProps, any> {
@@ -86,6 +87,7 @@ export class ButtonBase<ButtonProps extends ButtonBaseProps> extends React.Compo
             href,
             target: this.props.target,
             onKeyDown: this.handleKeyDown,
+            ref: this.props.forwardRef,
         },
             this.getChildren(),
         );

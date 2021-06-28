@@ -96,6 +96,7 @@ export class PickerInput<TItem, TId> extends PickerInputBase<TItem, TId, PickerI
     }
 
     render() {
+        // console.log(this.togglerRef.current);
         const rows = this.getRows();
         const renderedDataRows = rows.map((props: DataRowProps<TItem, TId>) => this.renderRow(props));
         const renderTarget = this.props.renderToggler || (props => <PickerToggler { ...props } />);

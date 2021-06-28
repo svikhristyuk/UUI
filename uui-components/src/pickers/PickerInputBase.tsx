@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { findDOMNode } from 'react-dom';
+import React from 'react';
 import { Placement } from '@popperjs/core';
 import { UuiContexts, uuiContextTypes, IHasPlaceholder, IDisableable, DataRowProps, ICanBeReadonly } from '@epam/uui';
 import { PickerBase, PickerBaseState, PickerBaseProps, handleDataSourceKeyboard, PickerTogglerProps, DataSourceKeyboardParams } from './index';
@@ -28,8 +27,9 @@ const initialRowsVisible = 20; /* estimated, with some reserve to allow start sc
 
 export abstract class PickerInputBase<TItem, TId, TProps> extends PickerBase<TItem, TId, PickerInputBaseProps<TItem, TId> & TProps, PickerInputState> {
     static contextTypes = uuiContextTypes;
-    togglerRef = React.createRef<any>();
     context: UuiContexts;
+
+    protected togglerRef = React.createRef<any>();
 
     abstract toggleModalOpening(opened: boolean): void;
 
@@ -127,7 +127,7 @@ export abstract class PickerInputBase<TItem, TId, TProps> extends PickerBase<TIt
             onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => this.handlePickerInputKeyboard(rows, e),
             disableSearch: this.getSearchPosition() !== 'input',
             disableClear,
-            ref: this.togglerRef,
+            togglerRef: this.togglerRef,
         };
     }
 
@@ -141,7 +141,7 @@ export abstract class PickerInputBase<TItem, TId, TProps> extends PickerBase<TIt
         if (e.key === 'Escape' && this.state.opened || e.key === 'Tab' && this.state.opened) {
             e.preventDefault();
             this.toggleDropdownOpening(false);
-            (findDOMNode(this.togglerRef.current) as any).focus();
+            this.togglerRef.current.focus();
         }
 
         handleDataSourceKeyboard({

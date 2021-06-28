@@ -20,6 +20,7 @@ export interface PickerTogglerProps<TItem, TId = any> extends IPickerToggler<TIt
     disableSearch?: boolean;
     disableClear?: boolean;
     minCharsToSearch?: number;
+    togglerRef?: any;
 }
 
 interface PickerTogglerState {
@@ -132,7 +133,10 @@ export class PickerToggler<TItem, TId> extends React.Component<PickerTogglerProp
         return (
             <div
                 onClick={ () => { this.props.onClick && !this.props.isReadonly && this.props.onClick(); this.handleFocus(); } }
-                ref={ el => { this.toggleContainer = el; } }
+                ref={ el => { 
+                    this.toggleContainer = el;
+                    this.props.togglerRef.current = el;
+                } }
                 className={ cx(css.container,
                     uuiElement.inputBox,
                     this.props.isDisabled && uuiMod.disabled,

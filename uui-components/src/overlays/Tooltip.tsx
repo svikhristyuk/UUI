@@ -155,7 +155,12 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         return (
             <Manager>
                 <Reference>
-                    { ({ref}) => <PopperTargetWrapper innerRef={ ref }>{ this.props.children }</PopperTargetWrapper> }
+                    { ({ref}) => {
+                        const testRef = (el: any) => {
+                            console.log("REF", el);
+                        };
+                        return <PopperTargetWrapper innerRef={ testRef }>{ this.props.children }</PopperTargetWrapper>;
+                    } }
                 </Reference>
                 { hasTooltip && this.state.isOpen && <Portal target={ this.props.portalTarget }>
                     <Popper

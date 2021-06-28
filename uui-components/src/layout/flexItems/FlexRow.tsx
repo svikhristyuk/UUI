@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as css from './FlexRow.scss';
 import cx from 'classnames';
 import { FlexRowProps, uuiMarkers, isClickableChildClicked } from '@epam/uui';
@@ -20,6 +20,7 @@ export class FlexRow extends React.Component<FlexRowProps> {
                 props.onClick && uuiMarkers.clickable,
                 css['align-items-' + (this.props.alignItems === undefined ? 'center' : this.props.alignItems)],
             ) }
+            ref={ this.props.nodeRef }
             { ...props }
         >
             { this.props.children }

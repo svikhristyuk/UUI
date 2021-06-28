@@ -161,6 +161,7 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
     private renderTarget(targetProps: ReferenceChildrenProps) {
         const innerRef = (node: Element) => {
             this.targetNode = ReactDOM.findDOMNode(node) as HTMLElement;
+            console.log("innerRef", node, this.targetNode);
             (targetProps.ref as React.RefCallback<any>)(this.targetNode);
         };
 
@@ -171,6 +172,10 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
                     onClick: (this.props.openOnClick || (!this.props.openOnClick && !this.props.openOnHover)) ? this.handleTargetClick : undefined,
                     isOpen: this.isOpened(),
                     isDropdown: true,
+                    forwardRef: (node: any) => {
+                        console.log("forwardRef", node);
+                        (targetProps.ref as React.RefCallback<any>)(node);
+                    },
                 })
             }
             </PopperTargetWrapper>

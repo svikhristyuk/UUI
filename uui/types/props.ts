@@ -4,6 +4,7 @@ import {DataRowProps} from "./tables";
 import {AnalyticsEvent} from "./contexts";
 import * as types from "../index";
 import * as React from "react";
+import { RefObject } from "react";
 
 /** Component value can be invalid */
 export interface ICanBeInvalid {
@@ -64,6 +65,7 @@ export interface IHasDirection {
 export interface IDropdownToggler extends IHasCaption, IClickable {
     isOpen?: boolean;
     isDropdown?: boolean;
+    forwardRef?: any;
 }
 
 /**
@@ -145,6 +147,7 @@ export type FlexRowProps = IHasCX
     & {
         alignItems?: 'top' | 'center' | 'bottom' | 'stretch';
         children?: any;
+        nodeRef?: RefObject<any>;
     };
 
 export type FlexCellProps = IHasCX

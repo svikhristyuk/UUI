@@ -1,22 +1,33 @@
-import * as React from "react";
-import * as reactDom from "react-dom";
+import React, { ReactChild, ReactElement, ReactNode, useEffect, useLayoutEffect, useState } from "react";
 
 interface TooltipWrapperProps {
+    children: ReactNode;
     innerRef: any;
 }
 
-export class PopperTargetWrapper extends React.Component<TooltipWrapperProps> {
-    componentDidMount(): void {
-        const node = reactDom.findDOMNode(this);
-        this.props.innerRef(node);
-    }
+const PopperTargetWrapperImpl: React.FC<TooltipWrapperProps> = ({ children, innerRef }) => {
+    const [node, setNode] = useState<ReactElement | null>(null);
+    const [replacedChild, setReplacedChild] = useState<ReactChild | null>(null);
 
-    componentDidUpdate(): void {
-        const node = reactDom.findDOMNode(this);
-        this.props.innerRef(node);
-    }
+    useLayoutEffect(() => {
+        if (typeof children !== "object") return;
+        setReplacedChild(
+            React.cloneElement(children as ReactElement, {
+                ref: (el: ReactElement) => {
+                    setNode(el);
+                    
+                    const { ref } = children as any;
+                    if (typeof ref === "function") ref(el);
+                },
+            }),
+        );
+    }, [children]);
 
-    render() {
-        return this.props.children;
-    }
-}
+    useEffect(() => {
+        innerRef(node);
+    }, [node, innerRef]);
+
+    return (replacedChild ?? children) as ReactElement;
+};
+
+export const PopperTargetWrapper = React.memo(PopperTargetWrapperImpl);

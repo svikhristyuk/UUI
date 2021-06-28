@@ -19,9 +19,9 @@ describe('Tooltip', () => {
     it('should be rendered correctly', () => {
         const tree = renderer
             .create(<Tooltip
-                color='gray90'
-                content='Test'
-                trigger='click'
+                color="gray90"
+                content="Test"
+                trigger="click"
             >
                 { 'Test' }
             </Tooltip>)

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
 import isEqual from 'lodash.isequal';
 import { DataRowProps, DataColumnProps, FlexRowProps, uuiMod, uuiMarkers } from '@epam/uui';
 import { FlexRow } from '@epam/uui-components';
@@ -18,6 +17,7 @@ export interface DataPickerRowProps<TItem, TId> extends DataRowProps<TItem, TId>
 }
 
 export class DataPickerRow<TItem, TId> extends React.Component<DataPickerRowProps<TItem, TId>> {
+    private nodeRef = React.createRef<HTMLDivElement>();
 
     private getIcon = (size: string) => {
         switch (size) {
@@ -28,9 +28,6 @@ export class DataPickerRow<TItem, TId> extends React.Component<DataPickerRowProp
             default: return tickIcon_18;
         }
     }
-
-    rowNode: React.RefObject<any> = React.createRef();
-    rowDOMNode: Element | Text = null;
 
     column: DataColumnProps<TItem> =
         {
@@ -46,14 +43,13 @@ export class DataPickerRow<TItem, TId> extends React.Component<DataPickerRowProp
         };
 
     componentDidMount() {
-        this.rowDOMNode = ReactDOM.findDOMNode(this.rowNode.current);
         if (this.props.onFocus) {
-            this.rowDOMNode?.addEventListener('mouseenter', this.handleMouseEnter);
+            this.nodeRef.current?.addEventListener('mouseenter', this.handleMouseEnter);
         }
     }
 
     componentWillUnmount() {
-        this.rowDOMNode?.removeEventListener('mouseenter', this.handleMouseEnter);
+        this.nodeRef.current?.removeEventListener('mouseenter', this.handleMouseEnter);
     }
 
     handleMouseEnter = (e: any) => {
@@ -70,7 +66,7 @@ export class DataPickerRow<TItem, TId> extends React.Component<DataPickerRowProp
         return <FlexRow
             onClick={ clickHandler && (() => clickHandler(this.props)) }
             rawProps={ this.props.rawProps }
-            ref={ this.rowNode }
+            nodeRef={ this.nodeRef }
             cx={ [
                 css.pickerRow,
                 clickHandler && uuiMarkers.clickable,
