@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as css from './ComplexForm.scss';
 import {Panel, FlexRow, FlexCell, LabeledInput, TextInput, PickerInput, DatePicker, ControlWrapper, RadioGroup, CheckboxGroup, Rating, TextArea, NumericInput,
     RangeDatePicker, Slider, RangeSlider, Blocker, DropSpotRenderParams, Text, DropSpot, UploadFileToggler, LinkButton, TimePicker } from '@epam/loveship';
-import {ILens, cx, LazyDataSource, ArrayDataSource, AsyncDataSource} from '@epam/uui';
+import {ILens, cx, LazyDataSource, ArrayDataSource, AsyncDataSource, FileUploadResponse} from '@epam/uui';
 import { svc } from '../../services';
 import {Country, City, PersonDetails} from '@epam/uui-docs';
 import { ExperienceEditor } from './ExperienceEditor';
@@ -22,12 +22,13 @@ export class PersonDetailEditor extends React.Component<PersonDetailEditorProps>
         this.updateAttachment(file, file.id)
     }
 
-    updateAttachment(newFile: any, id: number) {
+    updateAttachment(newFile: FileUploadResponse, id: number) {
+        console.log({ newFile })
         const attachments =  this.props.lens.prop('attachments').get();
         this.props.lens.prop('attachments').set(attachments.map(i => i.id === id ? newFile : i));
     }
 
-    uploadFile = (files: File[]): any => {
+    uploadFile = (files: File[]): void => {
         let tempIdCounter = 0;
         const attachments = this.props.lens.prop('attachments').default([]).get();
 
@@ -84,7 +85,7 @@ export class PersonDetailEditor extends React.Component<PersonDetailEditorProps>
     })
 
     asyncLocationsDs = new AsyncDataSource({
-        api: () => svc.api.demo.locations({}).then(r => r.items),
+        api: () => svc.api.demo.countries({}).then(r => r.items),
     });
 
     render(){
@@ -108,7 +109,7 @@ export class PersonDetailEditor extends React.Component<PersonDetailEditorProps>
                             {...this.props.lens.prop('countries').toProps()}
                             selectionMode='multi'
                             valueType='id'
-                            dataSource={ this.asyncLocationsDs as any }
+                            dataSource={ this.asyncLocationsDs }
                             getName={(c: Country) => c.name}
                         /> }
                     </LabeledInput>

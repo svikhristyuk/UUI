@@ -89,6 +89,7 @@ export class ComplexForm extends React.Component<any, ComplexFormState> {
         return <>
             <FlexCell width='auto'>
                 <MultiSwitch
+                    rawProps={{ role: 'tablist' }}
                     items={ [{ id: 'Edit', caption: 'Edit' }, { id: 'isDisabled', caption: 'Disabled' }, { id: 'isReadOnly', caption: 'ReadOnly' }] }
                     value={ this.state.isDisabled ? 'isDisabled' : this.state.isReadOnly ? 'isReadOnly' : 'Edit' }
                     onValueChange={ (val: string) => val === 'Edit' ? this.setState({ isDisabled: false, isReadOnly: false }) : val === 'isDisabled' ? this.setState({ isDisabled: true, isReadOnly: false }) : this.setState({ isReadOnly: true, isDisabled: false }) }
@@ -120,6 +121,7 @@ export class ComplexForm extends React.Component<any, ComplexFormState> {
                     isDisabled={ this.state.isDisabled || !props.isChanged }
                     caption='Save'
                     color='grass'
+                    rawProps={{ type: 'submit' }}
                 />
             </FlexCell>
             <FlexCell minWidth={ 100 }>
@@ -132,17 +134,28 @@ export class ComplexForm extends React.Component<any, ComplexFormState> {
                 <Button caption='Revert' color='sun' fill='none' isDisabled={ !props.canRevert } onClick={ props.revert } />
             </FlexCell>
             <FlexCell minWidth={ 100 }>
-                <Button caption='Reload' color='lavanda'
+                <Button
+                    caption='Reload'
+                    color='lavanda'
+                    rawProps={{ type: 'reset' }}
                     onClick={ () => this.loadForm() }
                 />
             </FlexCell>
             <FlexCell minWidth={ 100 }>
-                <Button caption='Load default' color='fire'
+                <Button
+                    caption='Load default'
+                    color='fire'
+                    rawProps={{ type: 'reset' }}
                     onClick={ () => this.loadDefaultPerson }
                 />
             </FlexCell>
             <FlexCell minWidth={ 100 }>
-                <Button caption='Clear' fill='none' color='fire' isDisabled={ this.state.isDisabled }
+                <Button
+                    caption='Clear'
+                    fill='none'
+                    color='fire'
+                    isDisabled={ this.state.isDisabled }
+                    rawProps={{ type: 'reset' }}
                     onClick={ () => this.setState({ person: {} }) }
                 />
             </FlexCell>
@@ -172,8 +185,6 @@ export class ComplexForm extends React.Component<any, ComplexFormState> {
     }
 
     renderEditForm = (props: RenderFormProps<PersonDetails>) => {
-        let lens = props.lens;
-
         return <PersonDetailEditor isBlocked={ this.state.isBlocked || props.isInProgress } lens={ props.lens } isDisabled={ this.state.isDisabled } isReadOnly={ this.state.isReadOnly } />;
     }
 

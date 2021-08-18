@@ -1,19 +1,18 @@
 import * as React from 'react';
 import * as css from './ComplexForm.scss';
 import { Panel, FlexRow, FlexCell, LabeledInput, ControlWrapper, RadioGroup, CheckboxGroup, Rating, Slider, RangeSlider, Blocker, Text } from '@epam/loveship';
-import { ILens } from '@epam/uui';
+import { IEditable, ILens } from '@epam/uui';
 import { ExperienceEditor } from './ExperienceEditor';
+import { PersonDetails } from '@epam/uui-docs';
 
-interface PersonDetailViewProps{
-    lens: ILens<any>;
+interface PersonDetailViewProps extends Pick<IEditable<PersonDetails>, 'value'> {
+    lens: ILens<PersonDetails>;
     isDisabled: boolean;
     isBlocked: boolean;
-    value: any;
 }
 
 export class PersonDetailView extends React.Component<PersonDetailViewProps>{
-
-    render(){
+    render() {
         return <div className={css.horizontal}>
         <Panel>
             <FlexRow type='form'>
