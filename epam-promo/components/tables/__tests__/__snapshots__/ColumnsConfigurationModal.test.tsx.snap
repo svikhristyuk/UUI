@@ -165,7 +165,6 @@ exports[`ColumnsConfigurationModal should be rendered correctly 1`] = `
                     </div>
                     <div
                       className="uui-input-label"
-                      role="label"
                     >
                       ID
                     </div>
@@ -221,7 +220,6 @@ exports[`ColumnsConfigurationModal should be rendered correctly 1`] = `
                     </div>
                     <div
                       className="uui-input-label"
-                      role="label"
                     >
                       Level
                     </div>
