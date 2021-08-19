@@ -14,7 +14,6 @@ exports[`PickerToggler should be rendered correctly 1`] = `
   >
     <input
       aria-haspopup="listbox"
-      aria-multiselectable={false}
       className="uui-input singleInput"
       onChange={[Function]}
       type="text"
