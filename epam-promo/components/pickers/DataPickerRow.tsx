@@ -20,7 +20,6 @@ export interface DataPickerRowProps<TItem, TId> extends DataRowProps<TItem, TId>
 }
 
 export class DataPickerRow<TItem, TId> extends React.Component<DataPickerRowProps<TItem, TId>> {
-
     private getIcon = (size: string) => {
         switch (size) {
             case '24': return tickIcon_12;
