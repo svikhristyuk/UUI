@@ -44,6 +44,10 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         return this.props.format === 24 ? 'HH:mm' : 'hh:mm A';
     }
 
+    onToggle = (value: boolean) => {
+        this.setState({ ...this.state, isOpen: value })
+    }
+
     onClear = () => {
         this.props.onValueChange({ hours: 0, minutes: 0 });
     }
@@ -53,7 +57,6 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
             this.setState({ ...this.state, value: newValue });
         } else if (dayjs(newValue, this.getFormat(), true).isValid()) {
             const value = dayjs(newValue, this.getFormat(), true);
-
             this.props.onValueChange({ hours: value.hour(), minutes: value.minute() });
             this.setState({ ...this.state, value: newValue });
         } else {
@@ -61,7 +64,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         }
     }
 
-    handleBlur = () => {
+    handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         if (this.state.value === '') {
             this.props.onValueChange(null);
             this.setState({ ...this.state, value: null });
@@ -74,6 +77,8 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     render() {
         return (
             <Dropdown
+                openOnFocus
+                closeOnBlur
                 renderTarget={ (props) => (
                     <TextInput
                         { ...props }
@@ -99,9 +104,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                         </DropdownContainer>
                     )
                 }
-                onValueChange={ (opened) =>
-                    this.setState({ ...this.state, isOpen: opened })
-                }
+                onValueChange={ !this.props.isDisabled && !this.props.isReadonly ? this.onToggle : null }
                 value={ this.state.isOpen }
                 modifiers={ [{ name: 'offset', options: { offset: [0, 6] } }] }
             />

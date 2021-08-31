@@ -133,9 +133,10 @@ export abstract class BaseDatePicker<TProps extends BaseDatePickerProps> extends
     render() {
         return (
             <Dropdown
+                openOnFocus
+                closeOnBlur
                 renderTarget={ (props: IDropdownToggler) => this.props.renderTarget ? this.props.renderTarget(props) : this.renderInput(props) }
-                renderBody={ (props) =>
-                    !this.props.isDisabled && !this.props.isReadonly && this.renderBody() }
+                renderBody={ () => !this.props.isDisabled && !this.props.isReadonly && this.renderBody() }
                 onValueChange={ (opened) => !this.props.isReadonly && this.onToggle(opened) }
                 value={ this.state.isOpen }
                 modifiers={ [{ name: 'offset', options: {offset: [0, 6]}}] }

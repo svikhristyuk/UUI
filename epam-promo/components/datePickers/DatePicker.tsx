@@ -34,8 +34,8 @@ export class DatePicker extends BaseDatePicker<DatePickerProps> {
                 isInvalid={ this.props.isInvalid }
                 isDisabled={ this.props.isDisabled }
                 isReadonly={ this.props.isReadonly }
-                onBlur={ this.handleBlur }
                 mode={ this.props.mode || defaultMode }
+                onBlur={ this.handleBlur }
             />
         );
     }

@@ -49,7 +49,7 @@ const getStateFromValue = (value: RangeDatePickerValue, format: string) => {
 export abstract class BaseRangeDatePicker<TProps extends BaseRangeDatePickerProps> extends React.Component<TProps, RangeDatePickerState> {
     static contextTypes = uuiContextTypes;
     context: UuiContexts;
-    
+
     state: RangeDatePickerState = {
         isOpen: false,
         view: 'DAY_SELECTION',
@@ -75,12 +75,6 @@ export abstract class BaseRangeDatePicker<TProps extends BaseRangeDatePickerProp
         return this.props.format || defaultFormat;
     }
 
-    handleWrapperBlur = () => {
-        if (!this.state.isOpen && this.state.inFocus) {
-            this.setState({ inFocus: null });
-        }
-    }
-
     valueIsValid(value: string, inputType: InputType) {
         if (dayjs(value, this.getFormat(), true).isValid()) {
             if (inputType === 'from') {
@@ -92,7 +86,12 @@ export abstract class BaseRangeDatePicker<TProps extends BaseRangeDatePickerProp
         return false;
     }
 
+    handleFocus = (inputType: InputType) => {
+       this.toggleOpening(true, inputType);
+    }
+
     handleBlur = (inputType: InputType) => {
+        this.setState({ ...this.state, inFocus: inputType });
         if (!this.valueIsValid(this.state.inputValue[inputType], inputType) || (this.props.filter && !this.props.filter(dayjs(this.props.value[inputType])))) {
             switch (inputType) {
                 case 'from': this.handleValueChange({ ...this.props.value, from: null }); this.getChangeHandler('from')(null); break;
@@ -129,7 +128,7 @@ export abstract class BaseRangeDatePicker<TProps extends BaseRangeDatePickerProp
             displayedDate: this.getDisplayedDateOnOpening(focus),
             inFocus: value ? focus : null,
         });
-        
+
         // if (this.props.getValueChangeAnalyticsEvent) {
         //     const event = this.props.getValueChangeAnalyticsEvent(value, this.state.isOpen);
         //     this.context.uuiAnalytics.sendEvent(event);
@@ -192,9 +191,11 @@ export abstract class BaseRangeDatePicker<TProps extends BaseRangeDatePickerProp
     render() {
         return (
             <Dropdown
+                openOnFocus
+                closeOnBlur
                 renderTarget={ (props: IDropdownToggler) => this.props.renderTarget ? this.props.renderTarget(props) : this.renderInput(props) }
                 renderBody={ (props: DropdownBodyProps) => !this.props.isDisabled && this.renderBody(props) }
-                onValueChange={ (opened) => { !this.props.isReadonly && this.toggleOpening(opened); } }
+                onValueChange={ (!this.props.isDisabled && !this.props.isReadonly && this.state.isOpen) ? this.toggleOpening : null }
                 value={ this.state.isOpen }
                 modifiers={ [{ name: 'offset', options: { offset: [0, 6] } }] }
                 placement={ this.props.placement }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Manager, Reference, Popper, ReferenceChildrenProps, PopperChildrenProps, Modifier } from 'react-popper';
-import { StrictModifiers, Placement, Boundary } from '@popperjs/core';
+import { Placement, Boundary } from '@popperjs/core';
 import { isClickableChildClicked, IEditable, LayoutLayer, IDropdownToggler, UuiContexts, closest, UuiContext } from '@epam/uui';
 import { Portal } from './Portal';
 import { PopperTargetWrapper } from './PopperTargetWrapper';
@@ -34,8 +34,10 @@ export interface DropdownProps extends Partial<IEditable<boolean>> {
 
     openOnClick?: boolean; // default: true
     openOnHover?: boolean; // default: false
+    openOnFocus?: boolean; // default: false
     closeOnTargetClick?: boolean; // default: true
     closeOnClickOutside?: boolean; // default: true
+    closeOnBlur?: boolean; // default: false
     closeOnMouseLeave?: 'toggler' | 'boundary' | false;
 
     portalTarget?: HTMLElement;
@@ -121,6 +123,14 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
         this.handleOpenedChange(false);
     }
 
+    private handleFocusEnter = (e: FocusEvent) => {
+        this.handleOpenedChange(true);
+    }
+
+    private handleBlurLeave = (e: KeyboardEvent) => {
+        if (e.key === 'Tab') this.handleOpenedChange(false);
+    }
+
     isClientInArea(e: MouseEvent) {
         const areaPadding = 30;
         const { y, x, height, width } = this.state.bodyBoundingRect;
@@ -168,7 +178,9 @@ export class Dropdown extends React.Component<DropdownProps, DropdownState> {
             <PopperTargetWrapper innerRef={ innerRef }>
             {
                 this.props.renderTarget({
-                    onClick: (this.props.openOnClick || (!this.props.openOnClick && !this.props.openOnHover)) ? this.handleTargetClick : undefined,
+                    onClick: (this.props.openOnClick || (!this.props.openOnClick && !this.props.openOnHover && !this.props.openOnFocus)) ? this.handleTargetClick : undefined,
+                    onFocus: this.props.openOnFocus ? this.handleFocusEnter : undefined,
+                    onKeyDown: this.props.closeOnBlur ? this.handleBlurLeave : undefined,
                     isOpen: this.isOpened(),
                     isDropdown: true,
                 })
