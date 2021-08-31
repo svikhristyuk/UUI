@@ -89,6 +89,7 @@ export class DataPickerBody<TItem, TId> extends React.Component<DataPickerBodyPr
                     ? <VirtualList
                         { ...this.lens.toProps() }
                         shadow={ false }
+                        role="listbox"
                         rows={ this.props.rows }
                         rowsCount={ this.props.rowsCount }
                         focusedIndex={ value && value.focusedIndex || 0 }

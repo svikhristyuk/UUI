@@ -119,11 +119,21 @@ export class PickerInput<TItem, TId> extends PickerInputBase<TItem, TId, PickerI
 
         return (
             <Dropdown
+                openOnFocus
+                closeOnBlur
                 renderTarget={ dropdownProps =>
                     <IEditableDebouncer
                         value={ this.state.dataSourceState.search }
                         onValueChange={ this.handleTogglerSearchChange }
-                        render={ editableProps => renderTarget({ ...this.getTogglerProps(rows), ...dropdownProps, ...editableProps }) }
+                        render={ editableProps => renderTarget({
+                            ...this.getTogglerProps(rows),
+                            ...dropdownProps,
+                            ...editableProps,
+                            onKeyDown: e => {
+                                dropdownProps.onKeyDown(e);
+                                this.getTogglerProps(rows).onKeyDown(e);
+                            }
+                        }) }
                     />
                 }
                 renderBody={ (props: DropdownBodyProps) => (

@@ -51,16 +51,12 @@ export class PickerToggler<TItem, TId> extends React.Component<PickerTogglerProp
 
     handleFocus = (e?: React.SyntheticEvent<HTMLElement>) => {
         this.props.onFocus && this.props.onFocus(e);
-        const input = this.toggleContainer?.querySelector('input');
-        input && input.focus();
         this.setState({ inFocus: true });
     }
 
     handleBlur = (e: React.SyntheticEvent<HTMLElement>) => {
         this.props.onBlur && this.props.onBlur(e);
         this.setState({ inFocus: false });
-        const input = this.toggleContainer?.querySelector('input');
-        input && input.blur();
     }
 
     handleActive = (e: Event) => {
@@ -105,7 +101,8 @@ export class PickerToggler<TItem, TId> extends React.Component<PickerTogglerProp
 
             return <div
                 aria-haspopup='listbox'
-                aria-multiselectable={ this.props.pickerMode === 'multi' }
+                tabIndex={ 0 }
+                aria-multiselectable={ this.props.pickerMode === 'multi' ? true : undefined }
                 className={ cx(
                     uuiElement.input,
                     this.props.selection.length === 0 && uuiElement.placeholder,
@@ -119,7 +116,8 @@ export class PickerToggler<TItem, TId> extends React.Component<PickerTogglerProp
         return <input
             type={ "text" }
             aria-haspopup='listbox'
-            aria-multiselectable={ this.props.pickerMode === 'multi' }
+            tabIndex={ 0 }
+            aria-multiselectable={ this.props.pickerMode === 'multi' ? true : undefined }
             className={ cx(uuiElement.input,
                 this.props.pickerMode === 'single' && css.singleInput,
                 isActivePlaceholder && (!this.state.inFocus || this.props.isReadonly) && uuiElement.placeholder)
@@ -154,7 +152,6 @@ export class PickerToggler<TItem, TId> extends React.Component<PickerTogglerProp
                     (!this.props.isReadonly && this.state.isActive) && uuiMod.active,
                     this.props.cx,
                 ) }
-                tabIndex={ 0 }
                 onFocus={ this.handleFocus }
                 onBlur={ this.handleBlur }
                 onKeyDown={ this.handleKeyDown }
