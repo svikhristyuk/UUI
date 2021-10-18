@@ -1,0 +1,86 @@
+$table-padding: 1.5em;
+
+.Wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    height: calc(100vh - 60px);
+    padding: $table-padding;
+    width: 100%;
+    overflow: auto;
+}
+
+table {
+    font-size: 125%;
+    white-space: nowrap;
+    margin: 0;
+    border: none;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+caption {
+    display: block;
+    position: sticky;
+    left: 0;
+}
+
+table thead {
+    display: table-row-group;
+}
+
+table td, table th {
+    border: 1px solid black;
+    padding: 0.5rem 1rem;
+}
+
+table tbody th:first-child, table tbody th:last-child {
+    border: 1px dotted black;
+}
+
+table thead th {
+    padding: 3px;
+    position: sticky;
+    top: -$table-padding;
+    z-index: 1;
+    width: 25vw;
+    background: white;
+}
+
+table td {
+    background: #fff;
+    padding: 4px 5px;
+    min-width: 50px;
+    max-width: 100px;
+    text-align: center;
+}
+
+table tbody th {
+    font-weight: 100;
+    font-style: italic;
+    text-align: left;
+    top: -$table-padding;
+    background: white;
+    z-index: 1;
+}
+
+table thead th:first-child {
+    position: sticky;
+    left: 0;
+    top: -$table-padding;
+    z-index: 2;
+    border: 1px dotted black;
+}
+
+// First column made fixed
+table thead th:first-child, table tbody tr th:first-of-type {
+    position: sticky;
+    left: -$table-padding;
+}
+
+// Last column made fixed
+table thead th:last-child, table tbody tr td:last-of-type {
+    position: sticky;
+    right: -$table-padding; //compensate padding
+}

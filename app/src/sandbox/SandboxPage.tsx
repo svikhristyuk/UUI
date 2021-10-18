@@ -1,5 +1,4 @@
 import React, { useMemo, createElement } from 'react';
-import { TreeNodeProps } from '@epam/uui-components';
 import { FlexRow } from '@epam/promo';
 import { AppHeader, Page, Sidebar } from '../common';
 import { svc } from '../services';
@@ -10,6 +9,7 @@ import { PersonsTableDemo } from './tables/PersonsTableDemo';
 import { DraftRTEDemo } from './draft-rte/DraftRTEDemo';
 import { ScrollSpyDemo } from './scroll-spy/ScrollSpyDemo';
 import { Responsive } from "./responsive/Responsive";
+import { ReworkTable } from './table-rework/ReworkTable';
 
 export const SandboxPage = () => {
     const items = useMemo(() => [
@@ -19,27 +19,24 @@ export const SandboxPage = () => {
         { id: 'Draft', name: 'DRAFT RTE demo', component: DraftRTEDemo },
         { id: 'scrollSpy', name: 'Scroll Spy', component: ScrollSpyDemo },
         { id: 'responsive', name: 'Responsive', component: Responsive },
+        { id: 'reworkTable', name: "Rework Table", component: ReworkTable }
     ], []);
 
     if (!items.map(item => item.id).includes(getQuery('id'))) {
         svc.uuiRouter.redirect({ pathname: '/sandbox', query: { id: items[0].id } });
     }
 
-    const onChange = (val: TreeNodeProps) => {
-        svc.uuiRouter.redirect({ pathname: '/sandbox', query: { id: val.id } });
-    };
-
     return (
         <Page renderHeader={ () => <AppHeader /> } >
             <FlexRow alignItems='stretch'>
                 <Sidebar
                     value={ getQuery('id') }
-                    onValueChange={ onChange }
-                    getItemLink={ (item) => !item.isDropdown && {
+                    onValueChange={ ({ id }) => svc.uuiRouter.redirect({ pathname: '/sandbox', query: { id } }) }
+                    items={ items }
+                    getItemLink={ item => !item.isDropdown && {
                         pathname: 'sandbox',
                         query: { id: item.id },
                     } }
-                    items={ items }
                 />
                 { createElement(items.find(item => item.id === getQuery('id')).component) }
             </FlexRow>
