@@ -2,7 +2,88 @@ import React from "react";
 import { Panel } from "@epam/promo";
 import * as css from "./ReworkTable.scss";
 
+interface TableRow {
+    rowsCount: number;
+    minRowWidth: number | string;
+    maxRowWidth: number | string;
+}
+
+interface TableProps {
+    caption: string;
+    header: TableRow;
+    body: TableRow;
+}
+
+const teams = [
+    "Boston Red Sox",
+    "Milwaukee Brewers",
+    "Los Angles Dodgers",
+    "New York Mets",
+    "St. Louis Cardinals",
+    "Houston Astros",
+    "Toronto Blue Jays",
+    "Philadelphia Phillies",
+    "Chicago Cubs",
+    "San Diego Padres",
+    "San Francisco Cows",
+    "Arcansas Coyotes"
+];
+
+const BodyItem = ({ count }: { count: number }) => {
+    const getBodyCells = () => {
+        const bodyItemDataElements = [];
+        for (let j = 0; j <= count; j++) {
+            bodyItemDataElements.push(
+                <td className={css.Table__Body__Cell}>
+                    {Math.ceil(Math.random() * j * count)}
+                </td>
+            );
+        }
+        return bodyItemDataElements;
+    }
+
+    return (
+        <tr className={css.Table__Body__Row}>
+            { ...getBodyCells() }
+        </tr>
+    );
+};
+
+const generateTable = ({
+    caption = 'Baseball numbers',
+    header,
+    body
+}: TableProps) => {
+    const generateHeader = () => {
+        const headerRows = [];
+        for (let i = 0; i < header.rowsCount; i++) {
+            headerRows.push(<th className={css.Table__Header__Cell}>{teams[i]}</th>);
+        }
+        return headerRows;
+    };
+
+    const generateBody = () => {
+        const bodyRows = [];
+        for (let i = 0; i < body.rowsCount; i++) {
+            bodyRows.push(<BodyItem count={body.rowsCount} />);
+        }
+        return bodyRows;
+    }
+
+    return {
+        caption,
+        header: generateHeader(),
+        body: generateBody(),
+    }
+};
+
 export function ReworkTable() {
+    const { header, body, caption } = generateTable({
+        caption: 'Baseball scores',
+        body: { minRowWidth: 100, maxRowWidth: '1fr', rowsCount: 11 },
+        header: { minRowWidth: 100, maxRowWidth: '1fr', rowsCount: 11 }
+    });
+
     return (
         <Panel
             background="white"
@@ -10,356 +91,15 @@ export function ReworkTable() {
             cx={css.Wrapper}
             shadow
         >
-            <table>
-                <caption id='caption'>Baseball numbers</caption>
-                <thead>
-                    <tr>
-                        <th>Teams</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                        <th>7</th>
-                        <th>8</th>
-                        <th>9</th>
-                        <th>10</th>
-                        <th>11</th>
-                        <th>Runs</th>
+            <table className={css.Table}>
+                <caption className={css.Table__Caption} id='caption'>{caption}</caption>
+                <thead className={css.Table__Header}>
+                    <tr className={css.Table__Header__Row}>
+                        { ...header }
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th>Milwaukee Brewers</th>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>22</td>
-                        <td>22</td>
-                        <td>22</td>
-                    </tr>
-                    <tr>
-                        <th>Los Angles Dodgers</th>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>16</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>New York Mets</th>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>18</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>St. Louis Cardinals</th>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>8</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Houston Astros</th>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>20</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Toronto Blue Jays</th>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>11</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Boston Red Sox</th>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>23</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Chicago Cubs</th>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>15</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Philadelphia Phillies</th>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>27</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Chicago White Sox</th>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>11</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>San Diego Padres</th>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>16</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Cleveland Indians</th>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>22</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>San Francisco Giants</th>
-                        <td>1</td>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>19</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Cincinatti Reds</th>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>10</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Minnesota Twins</th>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>4</td>
-                        <td>0</td>
-                        <td>22</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Tampa Bay Rays</th>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>3</td>
-                        <td>19</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Miami Marlins</th>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>19</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Oakland Athletics</th>
-                        <td>0</td>
-                        <td>4</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>16</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Detroit Tigers</th>
-                        <td>4</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>18</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Pittsburgh Pirates</th>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>18</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Seattle Mariners</th>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>14</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <th>Atlanta Braves</th>
-                        <td>4</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>1</td>
-                        <td>20</td>
-                        <td>4</td>
-                        <td>16</td>
-                    </tr>
+                <tbody className={css.Table__Body}>
+                   { ...body }
                 </tbody>
             </table>
         </Panel>
