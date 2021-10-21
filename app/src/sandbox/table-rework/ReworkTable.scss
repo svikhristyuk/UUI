@@ -1,10 +1,9 @@
 .Wrapper {
-    --table-padding: 1.5em;
     display: flex;
     flex-direction: column;
     flex: 1 1 0;
     height: calc(100vh - 60px);
-    padding: var(--table-padding);
+    padding: 1.5em;
     width: 100%;
     overflow: auto;
 }
@@ -24,54 +23,52 @@
     left: 0;
 }
 
-thead {
+.Table__Header {
     position: sticky;
-    top: calc(0 - var(--table-padding));
+    top: -1.5em;
+    z-index: 3;
 }
 
-thead th {
+.Table__Header__Cell {
     padding: 0.25rem;
     z-index: 1;
     background: white;
 }
 
-table td, table th {
+.Table__Header__Cell, .Table__Body__Cell {
     border: 1px solid black;
     padding: 0.5rem 1rem;
 }
 
-table tbody,
-table thead {
+.Table__Body, .Table__Header {
     --col-count: 11;
-    --min-cell-width: 200px;
+    --min-cell-width: 100px;
     --max-cell-width: 1fr;
 
     display: grid;
     grid-template-columns: repeat(var(--col-count), minmax(var(--min-cell-width), var(--max-cell-width)));
 }
 
-tr {
+.Table__Header__Row, .Table__Body__Row {
     display: contents;
 }
 
-td {
+.Table__Body__Cell {
     background: #fff;
     padding: 0.25rem;
     text-align: center;
 }
 
-thead tr th:first-of-type,
-tbody tr td:first-of-type {
+.Table__Header__Row .Table__Header__Cell:first-of-type,
+.Table__Body__Row .Table__Body__Cell:first-of-type {
     position: sticky;
-    left: calc(0 - var(--table-padding));
-    top: calc(var(--table-padding) - 1em);
+    left: -1.5em;
     z-index: 2;
 }
 
-thead tr th:last-of-type,
-tbody tr td:last-of-type {
+.Table__Header__Row .Table__Header__Cell:last-of-type,
+.Table__Body__Row .Table__Body__Cell:last-of-type {
     position: sticky;
-    right: calc(0 - var(--table-padding));
-    top: calc(var(--table-padding) - 1em);
+    right: -1.5em;
     z-index: 2;
 }

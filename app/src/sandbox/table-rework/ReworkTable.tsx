@@ -32,9 +32,9 @@ const teams = [
 const BodyItem = ({ count }: { count: number }) => {
     const getBodyCells = () => {
         const bodyItemDataElements = [];
-        for (let j = 0; j <= count; j++) {
+        for (let j = 0; j < count; j++) {
             bodyItemDataElements.push(
-                <td className={css.Table__Body__Cell}>
+                <td key={Math.random() * j * count} className={css.Table__Body__Cell}>
                     {Math.ceil(Math.random() * j * count)}
                 </td>
             );
@@ -56,18 +56,42 @@ const generateTable = ({
 }: TableProps) => {
     const generateHeader = () => {
         const headerRows = [];
+
         for (let i = 0; i < header.rowsCount; i++) {
             headerRows.push(<th className={css.Table__Header__Cell}>{teams[i]}</th>);
-        }
-        return headerRows;
+        };
+
+        return (
+            <thead
+                className={css.Table__Header}
+                style={{
+                    '--min-cell-width': header.minRowWidth,
+                    '-max-cell-width': header.maxRowWidth,
+                } as React.CSSProperties}>
+                <tr className={css.Table__Header__Row}>
+                    { ...headerRows }
+                </tr>
+            </thead>
+        );
     };
 
     const generateBody = () => {
         const bodyRows = [];
-        for (let i = 0; i < body.rowsCount; i++) {
-            bodyRows.push(<BodyItem count={body.rowsCount} />);
-        }
-        return bodyRows;
+
+        for (let i = 0; i < body.rowsCount * 2; i++) {
+            bodyRows.push(<BodyItem key={body.rowsCount} count={body.rowsCount} />);
+        };
+
+        return (
+            <tbody
+                className={css.Table__Body}
+                style={{
+                    '--min-cell-width': header.minRowWidth,
+                    '-max-cell-width': header.maxRowWidth,
+                } as React.CSSProperties}>
+                { ...bodyRows }
+            </tbody>
+        );
     }
 
     return {
@@ -80,8 +104,8 @@ const generateTable = ({
 export function ReworkTable() {
     const { header, body, caption } = generateTable({
         caption: 'Baseball scores',
-        body: { minRowWidth: 100, maxRowWidth: '1fr', rowsCount: 11 },
-        header: { minRowWidth: 100, maxRowWidth: '1fr', rowsCount: 11 }
+        body: { minRowWidth: '200px', maxRowWidth: '1fr', rowsCount: 11 },
+        header: { minRowWidth: '200px', maxRowWidth: '1fr', rowsCount: 11 }
     });
 
     return (
@@ -93,14 +117,8 @@ export function ReworkTable() {
         >
             <table className={css.Table}>
                 <caption className={css.Table__Caption} id='caption'>{caption}</caption>
-                <thead className={css.Table__Header}>
-                    <tr className={css.Table__Header__Row}>
-                        { ...header }
-                    </tr>
-                </thead>
-                <tbody className={css.Table__Body}>
-                   { ...body }
-                </tbody>
+                { header }
+                { body }
             </table>
         </Panel>
     );
