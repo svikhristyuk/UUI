@@ -20,7 +20,7 @@ export function getDemoApi(processRequest: (request: string, requestMethod: stri
         persons: lazyApi<models.Person, number>('persons'),
         personsPaged: (rq: LazyDataSourceApiRequest<models.Person, number, DataQueryFilter<models.Person>> & { page: number, pageSize: number }) =>
             processRequest(origin.concat('/api/persons-paged'), 'POST', rq) as Promise<LazyDataSourceApiResponse<models.Person> & { totalCount: number }>,
-        personGroups: (rq: LazyDataSourceApiRequest<models.PersonGroup, number, DataQueryFilter<models.PersonGroup>>) =>
+        personGroups: (rq: LazyDataSourceApiRequest<models.PersonGroup, number, DataQueryFilter<models.PersonGroup>> & { itemsRequest: LazyDataSourceApiRequest<models.PersonGroup, number, DataQueryFilter<models.PersonGroup>> }) =>
             processRequest(origin.concat('/api/personGroups'), 'POST', rq) as Promise<LazyDataSourceApiResponse<models.PersonGroup>>,
         departments: lazyApi<models.Department, number>('departments'),
         jobTitles: lazyApi<models.JobTitle, number>('jobTitles'),

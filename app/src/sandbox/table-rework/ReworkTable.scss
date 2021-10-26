@@ -3,72 +3,102 @@
     flex-direction: column;
     flex: 1 1 0;
     height: calc(100vh - 60px);
-    padding: 1.5em;
     width: 100%;
     overflow: auto;
 }
 
 .Table {
-    font-size: 125%;
+    --cell-width: 100px;
+    --cell-min-width: 0;
+    --cell-grow: 0;
+    --cell-shrink: 0;
+    --fixed-border-color: gainsboro;
+    --table-shadow: 0 3px 6px 0 rgb(29 30 38 / 10%), 0 1px 3px 0 rgb(29 30 38 / 10%);
+
+    display: block;
     white-space: nowrap;
     margin: 0;
     border: none;
-    border-collapse: separate;
     border-spacing: 0;
-}
-
-.Table__Caption {
-    display: inline-flex;
-    position: sticky;
-    left: 0;
+    box-shadow: var(--table-shadow);
 }
 
 .Table__Header {
+    --table-header-background: #fafafc;
+    --table-header-border: 1px solid #e1e3eb;
     position: sticky;
-    top: -1.5em;
-    z-index: 3;
+    top: 0;
+    border-top: var(--table-header-border);
+    border-bottom: var(--table-header-border);
+    border-left: none;
+    border-right: none;
+    z-index: 2;
 }
 
-.Table__Header__Cell {
-    padding: 0.25rem;
-    z-index: 1;
-    background: white;
+.Table__Header > * {
+    background-color: var(--table-header-background);
 }
 
 .Table__Header__Cell, .Table__Body__Cell {
-    border: 1px solid black;
+    text-transform: uppercase;
+    display: flex;
+    min-width: var(--min-cell-width);
+    flex-direction: row;
+    flex-basis: var(--cell-width);
+    flex-grow: var(--cell-grow);
+    flex-shrink: var(--cell-shrink);
+}
+
+.Table__Header__Cell, .Table__Body__Cell {
+    border: none;
+    background: white;
     padding: 0.5rem 1rem;
+    justify-content: center;
 }
 
-.Table__Body, .Table__Header {
-    --col-count: 11;
-    --min-cell-width: 100px;
-    --max-cell-width: 1fr;
-
-    display: grid;
-    grid-template-columns: repeat(var(--col-count), minmax(var(--min-cell-width), var(--max-cell-width)));
+.Table__Header, .Table__Body__Row {
+    display: flex;
 }
 
-.Table__Header__Row, .Table__Body__Row {
+.Table__Body__Row {
+    max-height: 48px;
+}
+
+.Table__Body {
+    display: flex;
+    flex-direction: column;
+}
+
+.Table__Header__Row {
     display: contents;
 }
 
 .Table__Body__Cell {
-    background: #fff;
-    padding: 0.25rem;
-    text-align: center;
+    text-transform: none;
+    overflow: hidden;
 }
 
-.Table__Header__Row .Table__Header__Cell:first-of-type,
 .Table__Body__Row .Table__Body__Cell:first-of-type {
     position: sticky;
-    left: -1.5em;
-    z-index: 2;
+    left: 0;
+    z-index: 1;
+    border-right: 1px solid var(--fixed-border-color);
 }
 
-.Table__Header__Row .Table__Header__Cell:last-of-type,
+.Table__Header__Row .Table__Header__Cell:first-of-type {
+    position: sticky;
+    left: 0;
+    top: 0;
+}
+
+.Table__Header__Row .Table__Header__Cell:last-of-type {
+    position: sticky;
+    right: 0;
+    top: 0;
+}
+
 .Table__Body__Row .Table__Body__Cell:last-of-type {
     position: sticky;
-    right: -1.5em;
-    z-index: 2;
+    right: 0;
+    border-left: 1px solid var(--fixed-border-color);
 }
