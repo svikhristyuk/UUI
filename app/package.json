@@ -44,6 +44,7 @@
     "react-measure": "2.5.2",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
+    "react-virtual": "2.8.2",
     "slate": "0.47.9"
   },
   "optionalDependencies": {
