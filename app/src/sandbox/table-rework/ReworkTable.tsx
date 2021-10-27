@@ -13,6 +13,19 @@ const TableCell = ({ children, style }: { children : ReactNode, style: CSSProper
 
 export function ReworkTable() {
     const [products] = useState<Product[]>(demoData as Product[]);
+    const [tableShadows, setTableShadows] = useState({ top: false, bottom: false });
+
+    const updateScroll = (e: React.UIEvent<HTMLTableSectionElement, UIEvent>) => {
+        const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+
+        if (!tableShadows.top && scrollTop > 0) setTableShadows({ ...tableShadows, top: true });
+        else if (tableShadows.top && scrollTop === 0) setTableShadows({ ...tableShadows, top: true });
+
+        const needsBottomShadow = scrollHeight - clientHeight > scrollTop;
+
+        if (!tableShadows.bottom && needsBottomShadow) setTableShadows({ ...tableShadows, bottom: true });
+        else if (tableShadows.bottom && !needsBottomShadow) setTableShadows({ ...tableShadows, bottom: false });
+    };
 
     const productColumns: DataColumnProps<FeatureClass>[] = useMemo(() => [
         {
@@ -85,8 +98,9 @@ export function ReworkTable() {
                             </th>
                         ))}
                     </tr>
+                    <div style={{ opacity: tableShadows.top ? 1 : 0 }} className='uui-scroll-shadow-top' />
                 </thead>
-                <tbody className={css.Table__Body}>
+                <tbody className={css.Table__Body} onScroll={updateScroll}>
                     {products.map(product => (
                         <tr key={product.ModifiedDate.concat(product.Class).concat(String(product.ProductID))} className={css.Table__Body__Row}>
                             {productCells.map(cell => (
@@ -102,6 +116,7 @@ export function ReworkTable() {
                         </tr>
                     ))}
                 </tbody>
+                <div style={{ opacity: tableShadows.bottom ? 1 : 0 }} className='uui-scroll-shadow-bottom' />
             </table>
         </Panel>
     );
