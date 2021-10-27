@@ -46,6 +46,9 @@
     display: block;
     height: var(--table-body);
     overflow: scroll;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable both-edges;
+    scrollbar-color: #ced0db transparent;
 
     &::-webkit-scrollbar {
         width: 6px;
