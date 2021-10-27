@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactNode, useMemo, useState } from "react";
 import { DataColumnProps } from "@epam/uui";
-import { Panel, Text, ScrollBars } from "@epam/promo";
+import { Panel, Text } from "@epam/promo";
 import * as css from "./ReworkTable.scss";
 import type { Product, FeatureClass } from '@epam/uui-docs';
 import { demoData } from './data';
@@ -70,46 +70,39 @@ export function ReworkTable() {
     ], []);
 
     return (
-        <Panel
-            background="white"
-            rawProps={{ role: 'region', tabIndex: 0, "aria-labelledby": 'caption' }}
-            cx={css.Wrapper}
-            shadow
-        >
-            <ScrollBars>
-                <table className={css.Table}>
-                    <thead className={css.Table__Header}>
-                        <tr className={css.Table__Header__Row}>
-                            { productColumns.map(column => (
-                                <th key={column.key} className={css.Table__Header__Cell} style={{
-                                    '--cell-min-width': column.minWidth ? `${column.minWidth}px` : undefined,
-                                    '--cell-width': column.width ? `${column.width}px` : undefined,
-                                    '--cell-grow': column.grow,
-                                    '--cell-shrink': column.shrink
+        <Panel background="white" cx={css.Wrapper} shadow>
+            <table className={css.Table}>
+                <thead className={css.Table__Header}>
+                    <tr className={css.Table__Header__Row}>
+                        { productColumns.map(column => (
+                            <th key={column.key} className={css.Table__Header__Cell} style={{
+                                '--cell-min-width': column.minWidth ? `${column.minWidth}px` : undefined,
+                                '--cell-width': column.width ? `${column.width}px` : undefined,
+                                '--cell-grow': column.grow,
+                                '--cell-shrink': column.shrink
+                            } as CSSProperties}>
+                                <Text size='36' font='sans-semibold' color='gray60'>{column.caption}</Text>
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody className={css.Table__Body}>
+                    {products.map(product => (
+                        <tr key={product.ModifiedDate.concat(product.Class).concat(String(product.ProductID))} className={css.Table__Body__Row}>
+                            {productCells.map(cell => (
+                                <TableCell style={ {
+                                    '--cell-min-width': cell.minWidth ? `${cell.minWidth}px` : undefined,
+                                    '--cell-width': cell.width ? `${cell.width}px` : undefined,
+                                    '--cell-grow': cell.grow,
+                                    '--cell-shrink': cell.shrink
                                 } as CSSProperties}>
-                                    <Text size='48' font='sans-semibold' color='gray60'>{column.caption}</Text>
-                                </th>
+                                    {product[cell.key as keyof Product]}
+                                </TableCell>
                             ))}
                         </tr>
-                    </thead>
-                    <tbody className={css.Table__Body}>
-                        {products.map(product => (
-                            <tr key={product.ModifiedDate.concat(product.Class).concat(String(product.ProductID))} className={css.Table__Body__Row}>
-                                {productCells.map(cell => (
-                                    <TableCell style={ {
-                                        '--cell-min-width': cell.minWidth ? `${cell.minWidth}px` : undefined,
-                                        '--cell-width': cell.width ? `${cell.width}px` : undefined,
-                                        '--cell-grow': cell.grow,
-                                        '--cell-shrink': cell.shrink
-                                    } as React.CSSProperties}>
-                                        {product[cell.key as keyof Product]}
-                                    </TableCell>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </ScrollBars>
+                    ))}
+                </tbody>
+            </table>
         </Panel>
     );
 }

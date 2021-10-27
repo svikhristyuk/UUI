@@ -1,10 +1,12 @@
+@use '../../../../epam-promo/assets/styles/colors' as *;
+
+
 .Wrapper {
     display: flex;
     flex-direction: column;
     flex: 1 1 0;
     height: calc(100vh - 60px);
     width: 100%;
-    overflow: auto;
 }
 
 .Table {
@@ -18,6 +20,7 @@
     display: block;
     white-space: nowrap;
     margin: 0;
+    width: 100%;
     border: none;
     border-spacing: 0;
     box-shadow: var(--table-shadow);
@@ -26,6 +29,7 @@
 .Table__Header {
     --table-header-background: #fafafc;
     --table-header-border: 1px solid #e1e3eb;
+
     position: sticky;
     top: 0;
     border-top: var(--table-header-border);
@@ -35,15 +39,34 @@
     z-index: 2;
 }
 
-.Table__Header > * {
-    background-color: var(--table-header-background);
+
+.Table__Body {
+    --table-body: calc(100vh - 100px);
+
+    display: block;
+    height: var(--table-body);
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: $gray60;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #ced0db;
+        border-radius: 1.5px;
+    }
 }
 
 .Table__Header__Cell, .Table__Body__Cell {
     text-transform: uppercase;
     display: flex;
-    min-width: var(--min-cell-width);
     flex-direction: row;
+    min-width: var(--min-cell-width);
     flex-basis: var(--cell-width);
     flex-grow: var(--cell-grow);
     flex-shrink: var(--cell-shrink);
@@ -52,7 +75,6 @@
 .Table__Header__Cell, .Table__Body__Cell {
     border: none;
     background: white;
-    padding: 0.5rem 1rem;
     justify-content: center;
 }
 
@@ -62,11 +84,6 @@
 
 .Table__Body__Row {
     max-height: 48px;
-}
-
-.Table__Body {
-    display: flex;
-    flex-direction: column;
 }
 
 .Table__Header__Row {
