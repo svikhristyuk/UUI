@@ -41,14 +41,14 @@
 
 
 .Table__Body {
-    --body-height: calc(100vh - 100px);
     --body-scroll-size: 6px;
     --body-scroll-thumb-color: #ced0db;
 
     position: relative;
-    display: block;
-    height: var(--body-height);
+    display: flex;
+    flex-direction: column;
     overflow: scroll;
+    height: calc(100vh - 100px);
     scrollbar-width: thin;
     scrollbar-color: var(--body-scroll-thumb-color) transparent;
 
@@ -62,7 +62,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-        background: --body-scroll-thumb-color;
+        background: var(--body-scroll-thumb-color);
         border-radius: 1.5px;
     }
 }
@@ -89,6 +89,13 @@
 
 .Table__Body__Row {
     --body-row-offset: 0px;
+    --body-row-height: 0px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--body-row-height);
     transform: translateY(var(--body-row-offset));
 }
 

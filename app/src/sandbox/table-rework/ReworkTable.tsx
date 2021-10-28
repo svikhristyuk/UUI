@@ -20,8 +20,7 @@ export function ReworkTable() {
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       size: products.length,
       parentRef: bodyRef,
-      overscan: 50,
-      estimateSize: useCallback(() => 2, []),
+
     });
 
     const updateScroll = (e: React.UIEvent<HTMLTableSectionElement, UIEvent>) => {
@@ -111,12 +110,18 @@ export function ReworkTable() {
                 </thead>
                 <tbody
                     style={{ '--body-height': `${totalSize}px` } as CSSProperties}
-                    ref={bodyRef}
                     className={css.Table__Body}
+                    ref={bodyRef}
                     onScroll={updateScroll}
                 >
-                  {virtualItems.map(({ index, measureRef, start }) => (
-                    <tr key={index} style={{ '--body-row-offset': `${start}px` } as CSSProperties} ref={measureRef} className={css.Table__Body__Row}>
+                  {virtualItems.map(({ index, start, size }) => (
+                    <tr
+                        key={index}
+                        className={css.Table__Body__Row}
+                        style={{
+                            '--body-row-height': `${size}px`,
+                            '--body-row-offset': `${start}px`
+                        } as CSSProperties}>
                         {productCells.map(cell => (
                             <TableCell style={ {
                                 '--cell-min-width': cell.minWidth ? `${cell.minWidth}px` : undefined,
