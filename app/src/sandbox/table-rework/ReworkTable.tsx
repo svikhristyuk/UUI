@@ -1,10 +1,13 @@
-import React, { CSSProperties, ReactNode, useMemo, useState, useRef, useCallback } from "react";
-import { Panel, Text } from "@epam/promo";
+import React, { useMemo, useState, useRef, useCallback, useEffect } from "react";
+import { Panel, Text, IconButton } from "@epam/promo";
+import { useUuiContext } from "@epam/uui";
+import * as UpArrow from '@epam/assets/icons/common/navigation-arrow-up-24.svg';
 import * as css from "./ReworkTable.scss";
 import { useVirtual } from 'react-virtual';
 import type { Product, FeatureClass } from '@epam/uui-docs';
-import type { DataColumnProps } from "@epam/uui";
-import { demoData } from './data';
+import type { CSSProperties, ReactNode } from 'react';
+import type { DataColumnProps, UuiContexts } from "@epam/uui";
+import type { TApi } from '../../data';
 
 const TableCell = ({ children, style }: { children : ReactNode, style: CSSProperties }) => (
     <td style={style} className={css.Table__Body__Cell}>
@@ -13,24 +16,20 @@ const TableCell = ({ children, style }: { children : ReactNode, style: CSSProper
 );
 
 export function ReworkTable() {
-    const [products] = useState<Product[]>(demoData as Product[]);
-    const [tableShadows, setTableShadows] = useState({ top: false, bottom: false });
-    const bodyRef = useRef();
+    const svc = useUuiContext<TApi, UuiContexts>();
+    const [products, setProducts] = useState([]);
+    const bodyRef = useRef<HTMLTableSectionElement>();
 
-    const { virtualItems, totalSize, scrollToIndex } = useVirtual({
+    const { virtualItems, totalSize, scrollToOffset } = useVirtual({
       size: products.length,
       parentRef: bodyRef,
-
+      overscan: 20,
+      estimateSize: useCallback(() => 48, []),
     });
 
-    const updateScroll = (e: React.UIEvent<HTMLTableSectionElement, UIEvent>) => {
-        const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-        if (!tableShadows.top && scrollTop > 0) setTableShadows({ ...tableShadows, top: true });
-        else if (tableShadows.top && scrollTop === 0) setTableShadows({ ...tableShadows, top: true });
-        const needsBottomShadow = scrollHeight - clientHeight > scrollTop;
-        if (!tableShadows.bottom && needsBottomShadow) setTableShadows({ ...tableShadows, bottom: true });
-        else if (tableShadows.bottom && !needsBottomShadow) setTableShadows({ ...tableShadows, bottom: false });
-    };
+    useEffect(() => {
+        svc.api.demo.products({}).then(r => r.items).then(setProducts);
+    }, []);
 
     const productColumns: DataColumnProps<FeatureClass>[] = useMemo(() => [
         {
@@ -87,6 +86,12 @@ export function ReworkTable() {
         },
     ], []);
 
+    const needsTopShadow = bodyRef.current && (bodyRef.current.scrollTop > 0);
+    const needsBottomShadow = bodyRef.current && (bodyRef.current.scrollHeight - bodyRef.current.clientHeight > bodyRef.current.scrollTop);
+    const needsScrollTopButton = bodyRef.current && (bodyRef.current.scrollTop > bodyRef.current.clientHeight)
+
+    if (!products) return null;
+
     return (
         <Panel background="white" cx={css.Wrapper} shadow>
             <table className={css.Table}>
@@ -106,15 +111,21 @@ export function ReworkTable() {
                             </th>
                         ))}
                     </tr>
-                    <span style={{ '--scroll-shadow-top': tableShadows.top ? 1 : 0 } as CSSProperties } className='uui-scroll-shadow-top' />
+                    <tr aria-hidden className={css.Table__Header__Row}>
+                        <td className={css.Table__Header__Row} aria-hidden>
+                            <hr
+                                style={{ '--scroll-shadow-top': needsTopShadow ? 1 : 0 } as CSSProperties }
+                                className='uui-scroll-shadow-top'
+                            />
+                        </td>
+                    </tr>
                 </thead>
                 <tbody
                     style={{ '--body-height': `${totalSize}px` } as CSSProperties}
                     className={css.Table__Body}
                     ref={bodyRef}
-                    onScroll={updateScroll}
                 >
-                  {virtualItems.map(({ index, start, size }) => (
+                  {virtualItems.map(({ index, start, size, end }) => (
                     <tr
                         key={index}
                         className={css.Table__Body__Row}
@@ -123,7 +134,7 @@ export function ReworkTable() {
                             '--body-row-offset': `${start}px`
                         } as CSSProperties}>
                         {productCells.map(cell => (
-                            <TableCell style={ {
+                            <TableCell key={products[index][cell.key as keyof Product] + end} style={ {
                                 '--cell-min-width': cell.minWidth ? `${cell.minWidth}px` : undefined,
                                 '--cell-width': cell.width ? `${cell.width}px` : undefined,
                                 '--cell-grow': cell.grow,
@@ -135,10 +146,28 @@ export function ReworkTable() {
                     </tr>
                 ))}
                 </tbody>
-                <span
-                    style={{ '--scroll-shadow-bottom': tableShadows.bottom ? 1 : 0 } as CSSProperties}
-                    className='uui-scroll-shadow-bottom'
-                />
+                <tfoot className={css.Table__Footer}>
+                    <tr className={css.Table__Footer__Row}>
+                        <td aria-hidden className={css.Table__Footer__Row}>
+                            <hr
+                                style={{ '--scroll-shadow-bottom': needsBottomShadow ? 1 : 0 } as CSSProperties}
+                                className='uui-scroll-shadow-bottom'
+                            />
+                        </td>
+                        { needsScrollTopButton && (
+                            <td aria-hidden className={css.Table__Footer__Row}>
+                                <IconButton
+                                    icon={UpArrow}
+                                    iconPosition='right'
+                                    tabIndex={ -1 }
+                                    rawProps={{ 'aria-hidden': true }}
+                                    onClick={() => scrollToOffset(0, { align: 'start' })}
+                                    cx={css.Table__Scroll__Top}
+                                />
+                            </td>
+                        ) }
+                    </tr>
+                </tfoot>
             </table>
         </Panel>
     );
