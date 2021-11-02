@@ -1,6 +1,5 @@
 import * as React from 'react';
-import cx from 'classnames';
-import { DataTableHeaderCellProps, uuiMarkers, uuiDataTableHeaderCell, IDropdownToggler } from '@epam/uui';
+import { DataTableHeaderCellProps, uuiMarkers, uuiDataTableHeaderCell, IDropdownToggler, cx } from '@epam/uui';
 import { DataTableHeaderCell as UuiDataTableHeaderCell, HeaderCellContentProps } from '@epam/uui-components';
 import { ColumnHeaderDropdown, DataTableHeaderCellMods } from './';
 import { FlexCell, Checkbox, Text, IconButton, Tooltip } from '../';
