@@ -3,7 +3,7 @@ import { uuiMarkers, cx } from '@epam/uui';
 import { IconContainer, DragHandle } from '@epam/uui-components';
 import { FlexCell, Checkbox, TextPlaceholder, Text } from '../';
 import { DataTableCellProps, DataTableCellMods } from './types';
-import * as foldingArrow from '../icons/tree_folding_arrow.svg';
+import { ReactComponent as FoldingArrow } from '../icons/tree_folding_arrow.svg';
 import * as css from './DataTableCell.scss';
 
 export class DataTableCell extends React.Component<DataTableCellProps<any, any> & DataTableCellMods, {}> {
@@ -38,7 +38,7 @@ export class DataTableCell extends React.Component<DataTableCellProps<any, any> 
                 { this.props.isFirstColumn && row.indent > 0 && <div key='fold' className={ css.indent } style={ { marginLeft: (row.indent - 1) * 24 } }>
                     { row.isFoldable && <IconContainer
                         key='icon'
-                        icon={ foldingArrow }
+                        icon={ FoldingArrow }
                         cx={ [css.foldingArrow, css[`folding-arrow-${additionalItemSize}`], uuiMarkers.clickable] }
                         rotate={ row.isFolded ? '90ccw' : '0' }
                         onClick={ () => row.onFold(row) }

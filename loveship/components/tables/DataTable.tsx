@@ -6,7 +6,7 @@ import {
 import { ColumnsConfigurationModal, DataTableHeaderRow, DataTableRow, DataTableScrollRow, DataTableMods } from './';
 import { FlexRow, IconButton, VirtualList, Text } from '../';
 import * as css from './DataTable.scss';
-import * as searchIcon from '../icons/search-24.svg';
+import { ReactComponent as SearchIcon } from '../icons/search-24.svg';
 import * as CustomScrollBars from "react-custom-scrollbars-2";
 
 export interface DataTableProps<TItem, TId> extends IEditable<DataTableState>, DataSourceListProps, DataTableColumnsConfigOptions {
@@ -67,7 +67,7 @@ export const DataTable = <TItem, TId = any>(props: React.PropsWithChildren<DataT
     const renderNoResultsBlock = () => {
         const renderNoResults = () => (
             <div className={ cx(css.noResults) }>
-                <IconButton icon={ searchIcon } cx={ css.noResultsIcon }/>
+                <IconButton icon={ SearchIcon } cx={ css.noResultsIcon }/>
                 <Text fontSize='16' font='sans-semibold'>No Results Found</Text>
                 <Text fontSize='14'>We can't find any item matching your request</Text>
             </div>

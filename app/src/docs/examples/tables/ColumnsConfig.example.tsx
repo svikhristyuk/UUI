@@ -3,7 +3,7 @@ import { Text,  DataTable, Panel, IconButton, DataTableMods } from '@epam/promo'
 import { DataTableState, DataColumnProps, useLazyDataSource, useUuiContext } from '@epam/uui';
 import { City } from '@epam/uui-docs';
 import * as css from "./TablesExamples.scss";
-import * as moreIcon from "@epam/assets/icons/common/navigation-more_vert-18.svg";
+import { ReactComponent as MoreIcon } from "@epam/assets/icons/common/navigation-more_vert-18.svg";
 
 const LOCAL_STORAGE_KEY = 'dataTable-columnsConfig-example-key';
 
@@ -63,7 +63,7 @@ export default function ColumnsConfigurationDataTableExample(props: DataTableMod
         },
         {
             key: 'actions',
-            render: () => <IconButton icon={ moreIcon } color='gray60' />,
+            render: () => <IconButton icon={ MoreIcon } color='gray60' />,
             width: 54,
             fix: 'right',
         },

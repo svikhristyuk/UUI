@@ -3,7 +3,7 @@ import { DataSourceState, Lens, ScrollManager, DataColumnProps, UuiContext, UuiC
 import { DemoComponentProps, demoData } from '@epam/uui-docs';
 import { Text, DataTableRow, DataTableHeaderRow, Panel, DataTableScrollRow, FlexRow, FlexSpacer, IconButton } from '../..';
 import { ColumnsConfigurationModal } from '../ColumnsConfigurationModal';
-import * as gearIcon from '../../../icons/action-settings-18.svg';
+import { ReactComponent as GearIcon } from '../../../icons/action-settings-18.svg';
 
 export type Person = {
     id: number,
@@ -111,7 +111,7 @@ export class TableContext extends React.Component<DemoComponentProps, any> {
                         <Text>items</Text>
                     <FlexSpacer />
                     <IconButton
-                        icon={ gearIcon }
+                        icon={ GearIcon }
                         onClick={ this.showConfigurationModal }
                     />
                 </FlexRow>

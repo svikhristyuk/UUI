@@ -3,7 +3,7 @@ import { DataTableHeaderRow as uuiDataTableHeaderRow } from '@epam/uui-component
 import { DataTableHeaderRowProps, withMods, DataTableHeaderCellProps } from '@epam/uui';
 import { IconButton, DataTableHeaderCell, DataTableHeaderRowMods } from '../';
 import * as css from './DataTableHeaderRow.scss';
-import * as moreIcon from '@epam/assets/icons/common/action-settings-18.svg';
+import { ReactComponent as MoreIcon } from '@epam/assets/icons/common/action-settings-18.svg';
 
 export const DataTableHeaderRow = withMods<DataTableHeaderRowProps<any, any>, DataTableHeaderRowMods>(
     uuiDataTableHeaderRow,
@@ -17,5 +17,5 @@ export const DataTableHeaderRow = withMods<DataTableHeaderRowProps<any, any>, Da
             size={ mods.size }
             textCase={ mods.textCase || 'normal' }
         />,
-        renderConfigButton: () => <IconButton key='configuration' onClick={ mods.onConfigButtonClick } cx={ css.configIcon } color='gray60' icon={ moreIcon } />,
+        renderConfigButton: () => <IconButton key='configuration' onClick={ mods.onConfigButtonClick } cx={ css.configIcon } color='gray60' icon={ MoreIcon } />,
     }));

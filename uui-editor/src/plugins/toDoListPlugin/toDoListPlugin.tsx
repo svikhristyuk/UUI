@@ -3,7 +3,7 @@ import {Block, Editor as CoreEditor, KeyUtils} from "slate";
 import { ToDoItem } from "./ToDoItem";
 import * as React from "react";
 import { List } from "immutable";
-import * as checkboxListIcon from "../../icons/to-do.svg";
+import { ReactComponent as CheckboxListIcon } from "../../icons/to-do.svg";
 import { ToolbarButton } from '../../implementation/ToolbarButton';
 
 export const toDoListPlugin = () => {
@@ -67,5 +67,5 @@ const isTodo = (editor: Editor) => {
 
 
 const ToDoItemToolbarButton = (props: { editor: Editor }) => {
-    return <ToolbarButton isActive={ isTodo(props.editor) } icon={ checkboxListIcon } onClick={ () => isTodo(props.editor) ? props.editor.setBlocks('paragraph') : props.editor.setBlocks('toDoItem') } />;
+    return <ToolbarButton isActive={ isTodo(props.editor) } icon={ CheckboxListIcon } onClick={ () => isTodo(props.editor) ? props.editor.setBlocks('paragraph') : props.editor.setBlocks('toDoItem') } />;
 };

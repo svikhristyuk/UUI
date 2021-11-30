@@ -10,12 +10,12 @@ import { FlexCell } from '../layout';
 import { Text } from '../typography';
 import { Tooltip } from '../overlays';
 import { DataTableHeaderCellMods } from './types';
-import defaultSortIcon from './../icons/sort.svg';
-import sortIcon from './../icons/sort_asc-12.svg';
-import sortIconDesc from './../icons/sort_desc-12.svg';
-import filterIcon from './../icons/filter.svg';
-import dropdownIcon from './../icons/chevron-down-24.svg';
-import openedDropdownIcon from './../icons/chevron-up-24.svg';
+import { ReactComponent as DefaultSortIcon } from './../icons/sort.svg';
+import { ReactComponent as SortIcon } from './../icons/sort_asc-12.svg';
+import { ReactComponent as SortIconDesc } from './../icons/sort_desc-12.svg';
+import { ReactComponent as FilterIcon } from './../icons/filter.svg';
+import { ReactComponent as DropdownIcon } from './../icons/chevron-down-24.svg';
+import { ReactComponent as OpenedDropdownIcon } from './../icons/chevron-up-24.svg';
 import { ColumnHeaderDropdown } from "./ColumnHeaderDropdown";
 
 interface DataTableHeaderCellState {
@@ -58,14 +58,14 @@ export class DataTableHeaderCell extends React.Component<DataTableHeaderCellProp
                 </Text>
                 { this.props.column.info && <div><Text key="tooltip-marker">*</Text></div> }
                 { this.props.isFilterActive &&
-                <LinkButton key="filter" cx={ css.icon } size="30" color="night600" icon={ filterIcon }/> }
+                <LinkButton key="filter" cx={ css.icon } size="30" color="night600" icon={ FilterIcon }/> }
                 { this.props.column.isSortable && (!this.props.column.renderFilter || this.props.sortDirection) &&
                 <LinkButton
                     key="sort"
                     cx={ cx(css.icon, css.sortIcon, this.props.sortDirection && css.sortIconActive) }
                     size="24"
                     color="night400"
-                    icon={ this.props.sortDirection === 'desc' ? sortIconDesc : this.props.sortDirection === 'asc' ? sortIcon : defaultSortIcon }
+                    icon={ this.props.sortDirection === 'desc' ? SortIconDesc : this.props.sortDirection === 'asc' ? SortIcon : DefaultSortIcon }
                 /> }
                 { this.props.column.renderFilter && (
                     <LinkButton
@@ -73,7 +73,7 @@ export class DataTableHeaderCell extends React.Component<DataTableHeaderCellProp
                         cx={ cx(css.icon, css.dropdownIcon) }
                         size="30"
                         color="night600"
-                        icon={ this.state.isDropdownOpen ? openedDropdownIcon : dropdownIcon }
+                        icon={ this.state.isDropdownOpen ? OpenedDropdownIcon : DropdownIcon }
                     />
                 ) }
             </div>
